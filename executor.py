@@ -182,7 +182,7 @@ class Executor:
 
         codeString = str(currentBlock).strip()
         # xxx 进来直接判定names，会导致函数变量名与names相同时，无法被识别（好像是：仅在非函数内部和形参名寻找形参值时才需判断）
-        name, codeStringRest = utils.splitWordFromHead(codeString, self.names.keys())  # 因为代码名字可以带有空格，这里使用字符串匹配，而不是空格拆分命令各部分
+        name, codeStringRest = utils.splitWordFromHead(codeString, self.names.keys()) if self._shouldFindName(entryFunction, kwargFunctionDict) else (False, None)  # 因为代码名字可以带有空格，这里使用字符串匹配，而不是空格拆分命令各部分
         if name:  # 如果找到了名字
             # print(f"\033[92m找到了name：{name}\033[0m")
             # 则进进一步判断name是变量，还是函数
@@ -392,3 +392,11 @@ class Executor:
                 raise Exception(f"unexcept code block (not names or inFunction): {str(currentBlock)}")
 
             return entryFunction, kwargFunctionDict # 当前块处理完毕，可返回
+
+    def _shouldFindName(self, entryFunction: Function=None, kwargFunctionDict: dict=None):
+
+        # 如果as在形参表中，说明进入了as命名阶段；此时as具有最高优先级，可以覆盖所有names，所以此时应该直接跳过names匹配
+        if entryFunction and kwargFunctionDict and 'as' in kwargFunctionDict.keys():
+            return False
+
+        return True

@@ -40,12 +40,12 @@ def loadProgramFromBacktickMarkdown(filePath: str):
     codeBlockMode = False
     tmpBlockString = ''
     for char in text:
-        if not codeBlockMode and char == '`' and len(tmpBlockString) != 0: # prompt模式遇到`，则表示prompt块结束，进入block块
-            promptProgram.appendPromptBlock(program.PromptBlock(tmpBlockString))
+        if not codeBlockMode and char == '`': # prompt模式遇到`，则表示prompt块结束，进入block块
+            promptProgram.appendPromptBlock(program.PromptBlock(tmpBlockString)) if len(tmpBlockString) != 0 else None
             tmpBlockString = ''
             codeBlockMode = True
-        elif codeBlockMode and char == '`'  and len(tmpBlockString) != 0: # code模式遇到``，则表示code块结束，进入prompt块
-            promptProgram.appendCodeBlock(program.CodeBlock(tmpBlockString))
+        elif codeBlockMode and char == '`': # code模式遇到``，则表示code块结束，进入prompt块
+            promptProgram.appendCodeBlock(program.CodeBlock(tmpBlockString)) if len(tmpBlockString) != 0 else None
             tmpBlockString = ''
             codeBlockMode = False
         else:
@@ -53,7 +53,7 @@ def loadProgramFromBacktickMarkdown(filePath: str):
 
     return promptProgram
 
-# xxx 加载LLM main：15
+# 加载LLM main：15
 
 # 载入程序 main：18 - 39
 
