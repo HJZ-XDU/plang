@@ -15,7 +15,7 @@ import executor
 
 # 注册静态变量API
 def registerVariable(name: str, variable):
-    return executor.Executor._upsertStaticVariable(name=name, variable=variable)
+    return executor.Executor._upsertStaticVariable(name=name, value=variable)
 
 # 注册静态函数API（修饰器）
 def registerFunctionDecorator(name: str, parameterKeyStringList: list = None):

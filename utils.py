@@ -80,9 +80,9 @@ def importModuleFromFile(filePath: str):
 
 def integrateReturnSyntaxSugar4Function(runtime: executor.Executor, kwargFunctionDict: dict):
 
-    def returnPromptAndValue(promptAppend: str, value: str = 'None'):
+    def returnPromptAndValue(promptAppend: str, value = None):
         if 'as' in kwargFunctionDict.keys():
-            runtime.upsertVariable(name=kwargFunctionDict['as'], variable=value)
+            runtime.upsertVariable(name=kwargFunctionDict['as'], value=value)
         return  promptAppend
 
     return returnPromptAndValue

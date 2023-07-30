@@ -13,12 +13,18 @@ import utils
 @plang.registerFunctionDecorator('while', ['condition', 'then'])
 def while_do(**kwargs):
 
-    conditionString = kwargs['condition'].strip()
-    thenBlockContainer: program.BlockContainer = kwargs['then']
     executorContext: executor.Executor = kwargs['context']
+    def conditionStringLive(): # 注意：condition可能会在循环过程中被then改变，因此这里没有直接获取字符串，而是定义了一个live函数
+        conditionStringStatic = kwargs['condition']
+        if '_conditionName' in kwargs.keys(): # 如果该变量存在，说明condition是从Variable解析来的，此处选择从上下文中动态访问变量值
+            return executorContext.getVariable('_conditionName').getValueString()
+        else:
+            return conditionStringStatic
+    thenBlockContainer: program.BlockContainer = kwargs['then']
 
-    while conditionString not in utils.falseList:
+    while conditionStringLive() not in utils.falseList:
+        executorContext.upsertVariable(name=kwargs['as'], value=conditionStringLive()) # 动态更新返回值（as语法）
         executorContext.fork(thenBlockContainer).run()
 
 
-    return kwargs['result'](promptAppend='', value='') # 条件控制语句一般没有返回值吧
+    return kwargs['result'](promptAppend='', value=conditionStringLive()) # while语句的返回值是condition，很合理 注意：该变量可能会在循环中改变

@@ -48,19 +48,22 @@ class Prompt:
         return self.string
 
 class Variable:
-    def __init__(self, variable):
-        self.variable = variable
+    def __init__(self, value):
+        self.value = value
 
     def getValueString(self):
-        return str(self.variable)
+        return str(self.value)
 
-    def setValue(self, variable):
-        self.variable = variable
+    def getValue(self):
+        return self.value
+
+    def setValue(self, value):
+        self.value = value
 
     def __repr__(self):
         objType = type(self)
-        # return f'<{objType.__module__}.{objType.__name__} object at {hex(id(self))} value is "{self.variable}">'
-        return f'<{objType.__module__}.{objType.__name__} object, value is "{self.variable}">'
+        # return f'<{objType.__module__}.{objType.__name__} object at {hex(id(self))} value is "{self.value}">'
+        return f'<{objType.__module__}.{objType.__name__} object, value is "{self.value}">'
 
 class Function:
     def __init__(self, function, parameterKeyStringList: list = None):
@@ -115,8 +118,15 @@ class Executor:
 
         return self.currentPrompt
 
-    def upsertVariable(self, name: str, variable):
-        self.names[name] = Variable(variable=variable)
+    def upsertVariable(self, name: str, value):
+        self.names[name] = Variable(value=value)
+        return self.names[name]
+
+    def getVariable(self, name: str) -> Variable:
+        if name not in self.names.keys():
+            raise Exception(f"variable name {name} does not exist")
+        if not isinstance(self.names[name], Variable):
+            raise Exception(f"name {name} is not a instance of Variable: {type(self.names[name])}")
         return self.names[name]
 
     def upsertFunction(self, name: str, function: typing.Callable, parameterKeyStringList: list = None):
@@ -132,8 +142,8 @@ class Executor:
         return innerDecorator  # 然后返回内部装饰器
 
     @classmethod
-    def _upsertStaticVariable(cls, name: str, variable):
-        cls._staticNames[name] = Variable(variable=variable)
+    def _upsertStaticVariable(cls, name: str, value):
+        cls._staticNames[name] = Variable(value=value)
         return cls._staticNames[name]
 
     @classmethod
@@ -192,9 +202,11 @@ class Executor:
                     # 则写入形参值
                     currentParameterKey = list(kwargFunctionDict.keys())[-1]  # 取最后一个形参名
                     if kwargFunctionDict[currentParameterKey] is None:  # 如果形参仅初始化
-                        kwargFunctionDict[currentParameterKey] = self.names[name].getValueString()  # 则直接填写
+                        kwargFunctionDict[currentParameterKey] = self.names[name].getValue()  # 则直接填写
+                        kwargFunctionDict[f"_{currentParameterKey}Name"] = name  # 同时写入变量形参值元信息（变量名）
                     elif isinstance(kwargFunctionDict[currentParameterKey], list):  # 如果形参类型为list
                         kwargFunctionDict[currentParameterKey].append(self.names[name].getValueString())  # 则直接写入
+                        # xxx list形参是否需要返回value（不是上面的valueString）以及支持_name元属性 （核心在于or语法是否为现场解析：暂定为是）
                     else:  # 其他类型抛出异常（仅支持string和stringList的形参）
                         raise Exception(f"unsupport function parameter type (not string(None) or list): {currentParameterKey} => {kwargFunctionDict[currentParameterKey].__class__}")
 
