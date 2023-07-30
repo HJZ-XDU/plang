@@ -23,7 +23,7 @@ def while_do(**kwargs):
     thenBlockContainer: program.BlockContainer = kwargs['then']
 
     while conditionStringLive() not in utils.falseList:
-        executorContext.upsertVariable(name=kwargs['as'], value=conditionStringLive()) # 动态更新返回值（as语法）
+        executorContext.upsertVariable(name=kwargs['as'], value=conditionStringLive()) if 'as' in kwargs.keys() else None # 动态更新返回值（as语法）
         executorContext.fork(thenBlockContainer).run()
 
 
