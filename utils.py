@@ -9,6 +9,7 @@ import program
 import copy
 import importlib.util
 import executor
+import typing
 
 """
 功能：从codeString中拆分以wordStringList中字符串开头的前、后部分子串
@@ -87,17 +88,17 @@ def integrateReturnSyntaxSugar4Function(runtime: executor.Executor, kwargFunctio
 
     return returnPromptAndValue
 
-def readFunctionParameter(name: str, kwargFunctionDict: dict, defaultValue=None):
-    return kwargFunctionDict[name] if name in kwargFunctionDict.keys() else defaultValue
+def readFunctionParameter(name: str, kwargFunctionDict: dict, parameterType: typing.Callable=str, defaultValue=None):
+    return parameterType(kwargFunctionDict[name] if name in kwargFunctionDict.keys() else defaultValue)
 
-def readFunctionListParameter(name: str, kwargFunctionDict: dict, defaultValue=()):
+def readFunctionListParameter(name: str, kwargFunctionDict: dict, parameterType: typing.Callable=str, defaultValue=()):
     if name in kwargFunctionDict.keys():
         if isinstance(kwargFunctionDict[name], list):
-            return kwargFunctionDict[name]
+            return [parameterType(item) for item in kwargFunctionDict[name]]
         else:
-            return [kwargFunctionDict[name], ] # 如果不是list，则转为单元素list返回
+            return [parameterType(kwargFunctionDict[name]), ] # 如果不是list，则转为单元素list返回
     else:
-        return defaultValue
+        return parameterType(defaultValue)
 
 # xxx False条件判定待检验
 falseList = [None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]

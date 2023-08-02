@@ -51,6 +51,12 @@ def loadProgramFromBacktickMarkdown(filePath: str):
         else:
             tmpBlockString += char
 
+    # 最后一个"`"之后的字符也要按状态存入block
+    if codeBlockMode:
+        promptProgram.appendCodeBlock(program.CodeBlock(tmpBlockString)) if len(tmpBlockString) != 0 else None
+    else:
+        promptProgram.appendPromptBlock(program.PromptBlock(tmpBlockString)) if len(tmpBlockString) != 0 else None
+
     return promptProgram
 
 # 加载LLM main：15
@@ -68,7 +74,7 @@ def loadProgramFromBacktickMarkdown(filePath: str):
 # API界面：该文件内实现，均为为方便编程和命令行使用的界面API和参数
 if __name__ == '__main__':
     # 实例化LLM对象 ggml-ChineseAlpaca-13B-q4_0.bin baichuan-vicuna-7b.ggmlv3.q4_0.bin
-    llm = LLM.LLM('Llama_GGML', '/Users/hujingzhao/tshare/Llama/ggml-ChineseAlpaca-13B-q4_0.bin', n_ctx=1000)
+    llm = LLM.LLM('Llama_GGML', '/Users/hujingzhao/tshare/Llama/ggml-ChineseAlpaca-13B-q4_0.bin', n_ctx=1000, verbose=False)
 
     # 载入自定义静态变量和函数
     # __import__('examples.sampleTest.lib')

@@ -6,11 +6,13 @@
 """
 
 import plang
+import utils
+
 
 @plang.registerFunctionDecorator('select', ['from', ])
 def select(**kwargs):
     # 获取from参数
-    fromStringList = [optionString.strip() for optionString in kwargs['from']]
+    fromStringList = [optionString.strip() for optionString in utils.readFunctionListParameter(name='from', kwargFunctionDict=kwargs, defaultValue=[])]
 
     # 获取llm和prompt上下文
     llm = kwargs['llm']

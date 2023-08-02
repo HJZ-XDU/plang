@@ -10,6 +10,7 @@ import utils
 import typing
 import LLM
 import copy
+from collections import OrderedDict
 
 class Prompt:
 
@@ -83,16 +84,34 @@ class Function:
         objType = type(self)
         return f'<{objType.__module__}.{objType.__name__} object, function is {self.function}, parameter key is {self.parameterKeyStringList}>'
 
+class Status:
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.earlyExitReasonString = None
+
+    def isEarlyExit(self):
+        return False if self.earlyExitReasonString is None else True
+
+    def setEarlyExit(self, reasonString: str):
+        self.earlyExitReasonString = reasonString
+
+    def __contains__(self, item):
+        return item in [self.earlyExitReasonString, ]
+
 class Executor:
 
     _staticNames = dict()
 
     def __init__(self, blockContainer: program.BlockContainer, llm: LLM.LLM):
         # 优先级： 关键词(or and ； done) > 变量 > 函数（函数放最后，因为函数是透明的）
-        self.blockContainer = blockContainer # 程序
+        self.blockContainer = copy.deepcopy(blockContainer) # 程序 注意：程序应该是不可修改的，即便有可能在执行现场修改代码，也不应该影响到原始代码
         self.blockConveyor = program.BlockConveyor(self.blockContainer) # 逐块递送block
         self.currentPrompt = Prompt() # 已代码展开确认prompt
         self.names = dict() # 变量和函数名字表
+        self.parserStatus = Status() # 解释器状态
 
         self.llm = llm
 
@@ -103,8 +122,9 @@ class Executor:
         newExecutor = Executor(blockContainer=blockContainer, llm=self.llm)
 
         # fork: 应继承的有上下文
-        newExecutor.currentPrompt = self.currentPrompt
-        newExecutor.names = self.names
+        newExecutor.currentPrompt = self.currentPrompt # 全局唯一llm prompt上下文
+        newExecutor.names = self.names # 变量为全局共享
+        newExecutor.parserStatus = self.parserStatus # 解释器状态必须继承，用于向上传递解释器状态，供调用方知晓return原因
 
         return newExecutor
 
@@ -112,7 +132,7 @@ class Executor:
         currentBlock = self.blockConveyor.nextBlock()
 
         entryFunction, kwargFunctionDict = None, None
-        while currentBlock != None:
+        while currentBlock != None and not self.parserStatus.isEarlyExit():
             entryFunction, kwargFunctionDict = self.parseBlock(currentBlock, entryFunction=entryFunction, kwargFunctionDict=kwargFunctionDict)
             currentBlock = self.blockConveyor.nextBlock()
 
@@ -155,6 +175,8 @@ class Executor:
         currentBlock = block
         if currentBlock is None: # 注意检查：如果currentBlock是none，则说明程序已执行完毕，直接返回
             return None, None # 程序执行完毕，清空函数上下文状态（合理预设）
+        if self.parserStatus.isEarlyExit(): # 注意检查：如果early exit状态为真，则说明代码解释器应停止工作，带上下文返回
+            return entryFunction, kwargFunctionDict # 代码解释器应停止工作，带上下文返回（合理预设）
 
         if isinstance(currentBlock, program.PromptBlock): # 如果是prompt block
             if entryFunction is not None and kwargFunctionDict is not None: # 如果entryFunction和kwargFunctionDict都不为None，说明函数形参名正在寻找形参值
@@ -179,6 +201,8 @@ class Executor:
         currentBlock = codeBlock
         if currentBlock is None: # 注意检查：如果currentBlock是none，则说明程序已执行完毕，直接返回
             return None, None # 程序执行完毕，清空函数上下文状态（合理预设）
+        if self.parserStatus.isEarlyExit(): # 注意检查：如果early exit状态为真，则说明代码解释器应停止工作，带上下文返回
+            return entryFunction, kwargFunctionDict # 代码解释器应停止工作，带上下文返回（合理预设）
 
         codeString = str(currentBlock).strip()
         # xxx 进来直接判定names，会导致函数变量名与names相同时，无法被识别（好像是：仅在非函数内部和形参名寻找形参值时才需判断）
@@ -204,6 +228,7 @@ class Executor:
                     if kwargFunctionDict[currentParameterKey] is None:  # 如果形参仅初始化
                         kwargFunctionDict[currentParameterKey] = self.names[name].getValue()  # 则直接填写
                         kwargFunctionDict[f"_{currentParameterKey}Name"] = name  # 同时写入变量形参值元信息（变量名）
+                        kwargFunctionDict.move_to_end(currentParameterKey) # 注意：记得将当前形参名移动值字典尾部，因为字典尾部的key总是表示当前正在处理的形参
                     elif isinstance(kwargFunctionDict[currentParameterKey], list):  # 如果形参类型为list
                         kwargFunctionDict[currentParameterKey].append(self.names[name].getValueString())  # 则直接写入
                         # xxx list形参是否需要返回value（不是上面的valueString）以及支持_name元属性 （核心在于or语法是否为现场解析：暂定为是）
@@ -248,7 +273,7 @@ class Executor:
                         entryFunction, kwargFunctionDict = self.parseCodeBlock(self.blockConveyor.nextBlock(), entryFunction=entryFunction, kwargFunctionDict=kwargFunctionDict)  # 则递归解析
                         return entryFunction, kwargFunctionDict  # 递归闭合后返回
                     elif self.blockConveyor.isNextBlockType(program.PromptBlock): # 如果函数name后不是code block（而是prompt block），则entryFunction是无参函数
-                        kwargFunctionDict = {"context": self} # 注意：以无参形式调用函数，也需向函数提供执行器上下文
+                        kwargFunctionDict = OrderedDict({"context": self}) # 注意：以无参形式调用函数，也需向函数提供执行器上下文
                         kwargFunctionDict['result'] = utils.integrateReturnSyntaxSugar4Function(runtime=self, kwargFunctionDict=kwargFunctionDict)  # 将集成返回prompt与as值的语法糖函数入口作为参数之一传递给函数
                         kwargFunctionDict['llm'] = self.llm  # 将llm作为参数之一传递给函数 （llm可以通过context访问到，但考虑到可能会频繁调用llm，这里相当于提供一个快捷方式）
                         kwargFunctionDict['prompt'] = self.currentPrompt  # 将当前已确定prompt作为参数之一传递给函数 （prompt可以通过context访问到，但考虑到可能会频繁调用prompt，这里相当于提供一个快捷方式）
@@ -269,7 +294,7 @@ class Executor:
                     if kwargFunctionDict != None:
                         kwargFunctionDict[parameterKey] = None
                     else:
-                        kwargFunctionDict = {parameterKey: None}
+                        kwargFunctionDict = OrderedDict({parameterKey: None})
 
                     if codeStringRest != '':  # 如果代码串还没有处理完，递归处理
                         entryFunction, kwargFunctionDict = self.parseCodeBlock(program.CodeBlock(codeStringRest), entryFunction=entryFunction, kwargFunctionDict=kwargFunctionDict)  # 注意：代码块的子串也一定是代码
@@ -386,7 +411,7 @@ class Executor:
                         else: # 否则抛出异常
                             raise Exception(f"got lazy program snippet, but parameter[-1] {currentParameterKey} in function {entryFunction} not None(initialization): {kwargFunctionDict[currentParameterKey]=} => {lazyVariableBlockContainer=}")
 
-                    raise Exception(f"unexcept parameter (key or value) name '{codeString}': {entryFunction=} => {kwargFunctionDict=}")
+                    raise Exception(f"unexcept parameter (key or value) name \'{codeString}\': {entryFunction=} => {kwargFunctionDict=}")
             else: # 如果不在函数内部
                 # 非函数内部（且非函数或变量names），则抛出异常（未出现在names中的code串，只能是函数形参，而形参只能在函数内部；函数内部已在if中处理，所以这里抛出异常）
                 raise Exception(f"unexcept code block (not names or inFunction): {str(currentBlock)}")

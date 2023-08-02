@@ -42,19 +42,28 @@ INFO是由系统自动获取的内部和外部环境实时信息，供ASSISTANT�
 `complete stop at` # `temperature is` 0.3`;`
 
 ## USER:
-`# /` 好的，谢谢你`; read from` console`;`
+`# /` 好的，谢谢你
+`read from` console`;`
 
 ## ASSISTANT:
 `complete stop at` # `or` : `temperature is` 0.9`;`
 
-`while condition` True `then do`
+`set value` True `as isLoop;`
+`while condition isLoop then do`
 ## USER:
-`read from` console`;`
+`read from` console `as userInput;`
+`compare value userInput and` quit `as isEqual;`
+`set not isEqual as isLoop`
 
 ## ASSISTANT:
 `complete stop at` # `or` : `temperature is` 0.9`;`
 
 `done`
 
-这是一个变量调用示例： `varTest`
-这是一个无参函数调用示例：`funTest`
+`for each` a `or` b `or` c `then do`
+`if condition` true `then do
+break
+done`
+`item`. 这是一个变量调用示例： `varTest`
+`item`. 这是一个无参函数调用示例：`funTest`
+`done as item`

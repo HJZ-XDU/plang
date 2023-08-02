@@ -107,9 +107,11 @@ class BlockConveyor:
                 lazyCodeString = "" # 当前块的起止符“前”代码
 
                 currentCodeString = str(currentBlock) # 当前块代码，随着消耗，含义将变为：当前块的起止符“后”代码
+                skipCurrentCodeString = "" # 需跳过的进入该函数前首块已处理代码
                 if isFirstBeginString: # 如果是进入该函数的首块（进入函数时beginString所在块），需抛弃beginString之前的代码，因为进入函数之前已被处理
                     match = re.search(beginString, currentCodeString)
                     if match:
+                        skipCurrentCodeString = currentCodeString[0: match.end()] # 待剔除代码需要妥善保存，后面因分割重组代码时不可丢失任何实际代码
                         currentCodeString = currentCodeString[match.end(): ] # 剔除首个beginString及之前的代码
                         lazyStackLength += 1 # 首个beginString已处理，起止符栈+1
                         isFirstBeginString = not isFirstBeginString
@@ -151,9 +153,14 @@ class BlockConveyor:
                         if lazyStackLength == 0: # 若起止符已闭合则返回，则处理上下文，准备返回
                             # 将当前块按照终止拆分为当前和下一个两个块：终止符前的代码(lazyCodeString)替换当前块，终止符后(currentCodeString)的代码插入下一块 注意：新建CodeBlock前，需判断code string为否为空
                             splitBlockList = list()
+                            splitBlockList.append(CodeBlock(skipCurrentCodeString)) if len(skipCurrentCodeString.strip()) != 0 else None # 注意：有一种情况时beginString和endString在同一个code block，此时不要忘了之前跳过的代码 代码重组不应改变代码含义
                             splitBlockList.append(CodeBlock(lazyCodeString)) if len(lazyCodeString.strip()) != 0 else None
                             splitBlockList.append(CodeBlock(currentCodeString)) if len(currentCodeString.strip()) != 0 else None
-                            self.blockContainer.replaceBlockWithBlockList(index=self.blockIndex, blockList=splitBlockList)
+
+                            self.blockContainer.replaceBlockWithBlockList(index=self.blockIndex, blockList=splitBlockList) # 注意：被替换块的块索引指向已被处理块，则替换后索引指示处应为已处理块的末尾（待处理块的前一个）
+                            # 则当前块索引应始终指向CodeBlock(lazyCodeString)，因为CodeBlock(currentCodeString)为未处理完，待分块后续处理块
+                            self.blockIndex = self.blockIndex + 1 if len(skipCurrentCodeString.strip()) != 0 else self.blockIndex # 因此，若CodeBlock(skipCurrentCodeString)存在，则索引应向前走一块
+
 
                             # 把属于起止符之内的提交给LazyBlockContainer 注意：新建CodeBlock前，需判断lazyCodeString为否为空
                             lazyCodeString = lazyCodeString.strip().rstrip(endString) # 去掉最后的终止符
@@ -174,4 +181,6 @@ class BlockConveyor:
 
             currentBlock = self.nextBlock()
             if currentBlock is None: # 若一直到程序末尾，起止符都没有闭合，则抛出异常
+                print(f"{lazyBlockContainer=}:")
+                lazyBlockContainer.print()
                 raise Exception(f"delimiter not close until the end of blocks: {lazyBlockContainer=}")
