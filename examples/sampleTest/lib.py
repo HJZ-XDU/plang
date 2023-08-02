@@ -21,3 +21,10 @@ def turn(**kwargs):
 
 
     return kwargs['result'](promptAppend=promptAppend, value=returnValue)
+
+# 从plang.py动态注册测试中移动过来
+plang.registerVariable('varTest', '[this is a test var]')
+
+@plang.registerFunctionDecorator('funTest', [ ])
+def funTest(**kwargs):
+    return kwargs['result'](promptAppend="[this a test function without args]", value=None)

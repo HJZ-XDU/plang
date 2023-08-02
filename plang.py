@@ -12,6 +12,7 @@ import LLM
 [__import__(f"libLLM.{fileName[:-3]}") for fileName in os.listdir('./libLLM') if fileName.endswith(".py")]
 import program
 import executor
+import argparse
 
 # 注册静态变量API
 def registerVariable(name: str, variable):
@@ -59,39 +60,42 @@ def loadProgramFromBacktickMarkdown(filePath: str):
 
     return promptProgram
 
-# 加载LLM main：15
-
-# 载入程序 main：18 - 39
-
-# 实例化执行器 main：43
-
-# 载入库函数和变量 main：45 - 59
-
-# 执行程序 main：63
-
-# xxx 执行结果和上下文可视化 main：63 - 67
-
 # API界面：该文件内实现，均为为方便编程和命令行使用的界面API和参数
 if __name__ == '__main__':
-    # 实例化LLM对象 ggml-ChineseAlpaca-13B-q4_0.bin baichuan-vicuna-7b.ggmlv3.q4_0.bin
-    llm = LLM.LLM('Llama_GGML', '/Users/hujingzhao/tshare/Llama/ggml-ChineseAlpaca-13B-q4_0.bin', n_ctx=1000, verbose=False)
+    # 声明命令行参数及解析
+    argParse = argparse.ArgumentParser()
+    argParse.add_argument("file", metavar='FILE', type=str, nargs=None, help="plang program file path") # 程序文件路径 必选
+    argParse.add_argument("--model", "-m", type=str, nargs='?', help="llm model name", default='Llama_GGML') # llm模型名 可选
+    argParse.add_argument("--path", "-p", type=str, required=True, help="model file path") # llm 模型文件 必选
+    argParse.add_argument("--nContext", "-n", type=int, nargs='?', help="length of llm context", default=2048) # llm上下文长度 可选
+    argParse.add_argument("--lib", '-l', type=str, nargs='*', help='libs for program', default=[]) # 程序中可能用到的库文件 可选
+    argParse.add_argument("--verbose", "-v", action='store_true', help="output debug info", default=False) # 是否启用verbose模型 可选
+    commandArgument = argParse.parse_args()
+
+    # 实例化LLM对象 ggml-ChineseAlpaca-13B-q4_0.bin baichuan-vicuna-7b.ggmlv3.q4_0.bin '/Users/hujingzhao/tshare/Llama/ggml-ChineseAlpaca-13B-q4_0.bin'
+    llm = LLM.LLM(modelName=commandArgument.model, modelFilePath=commandArgument.path, n_ctx=commandArgument.nContext, verbose=commandArgument.verbose)
 
     # 载入自定义静态变量和函数
-    # __import__('examples.sampleTest.lib')
-    utils.importModuleFromFile('./examples/sampleTest/lib.py')
+    for libFilePath in commandArgument.lib:
+        utils.importModuleFromFile(libFilePath)
 
     # 载入程序
-    customProgram = loadProgramFromBacktickMarkdown('./examples/sampleTest/sampleTest.p.backtick.md')
+    supportProgramFileSuffix = ('.p.backtick.md', )
+    if commandArgument.file.endswith(supportProgramFileSuffix):
+        customProgram = loadProgramFromBacktickMarkdown(commandArgument.file)
+    else:
+        raise Exception(f"unsupport program file type [not in {supportProgramFileSuffix}]: {commandArgument.file}")
     # customProgram.print()
 
     # 实例化执行器
     customExecutor = executor.Executor(blockContainer=customProgram, llm=llm)
 
     # 载入自定义动态变量和函数
-    customExecutor.upsertVariable('varTest', '[this is a test var]')
-    @customExecutor.registerFunctionDecorator('funTest', [])
-    def funTest(**kwargs):
-        return "[this a test function without args]"
+    # 以下示例已移动值./examples/sampleTest/lib.py
+    # customExecutor.upsertVariable('varTest', '[this is a test var]')
+    # @customExecutor.registerFunctionDecorator('funTest', [])
+    # def funTest(**kwargs):
+    #     return "[this a test function without args]"
 
     # 打印一些测试内容
     # print('\n', customExecutor.names)
@@ -99,3 +103,6 @@ if __name__ == '__main__':
     #执行程序
     executedCustomProgram = customExecutor.run()
     # print(executedCustomProgram)
+
+    # 返回程序执行状态
+    exit(-1 if customExecutor.parserStatus.isEarlyExit() else 0)
