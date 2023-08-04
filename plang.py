@@ -85,7 +85,9 @@ if __name__ == '__main__':
         customProgram = loadProgramFromBacktickMarkdown(commandArgument.file)
     else:
         raise Exception(f"unsupport program file type [not in {supportProgramFileSuffix}]: {commandArgument.file}")
-    # customProgram.print()
+    # 按需打印程序
+    if commandArgument.verbose:
+        customProgram.print()
 
     # 实例化执行器
     customExecutor = executor.Executor(blockContainer=customProgram, llm=llm)
