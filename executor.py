@@ -161,6 +161,13 @@ class Executor:
 
         return innerDecorator  # 然后返回内部装饰器
 
+    def getFunction(self, name: str) -> Function:
+        if name not in self.names.keys():
+            raise Exception(f"function name {name} does not exist")
+        if not isinstance(self.names[name], Function):
+            raise Exception(f"name {name} is not a instance of Function: {type(self.names[name])}")
+        return self.names[name]
+
     @classmethod
     def _upsertStaticVariable(cls, name: str, value):
         cls._staticNames[name] = Variable(value=value)
