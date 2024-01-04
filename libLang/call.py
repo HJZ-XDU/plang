@@ -36,4 +36,4 @@ def call(**kwargs):
     newExecutorContext: executor.Executor = executorContext.fork(functionCallBlockContainer)
     newExecutorContext.run()
 
-    return kwargs['result'](promptAppend='', value=newExecutorContext.getVariable('_'))  # 返回值为被call函数的返回值
+    return kwargs['result'](promptAppend='', value=newExecutorContext.getVariable('_').getValueString())  # 返回值为被call函数的返回值
