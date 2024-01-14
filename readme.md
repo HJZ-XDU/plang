@@ -864,9 +864,31 @@ ls
     * [ ] 参数名与函数名相同时，会将参数名解析为函数名
     * [ ] 名字前缀相同时，会按照最短前缀名字解析
 
-## 相关工作
+## 相关工作 (prompting技术)
+- 字符串模板型
+  - 自然语言文本
+  - 穿插“占位符”的文本
+- API编程型
+  - 代码编程
+    - LangChain: https://github.com/langchain-ai/langchain
+    - Semantic Kernel: https://github.com/microsoft/semantic-kernel
+    - AutoGen: https://github.com/microsoft/autogen
+    - CrewAI: https://github.com/joaomdmoura/crewAI
+  - 图形编程
+    - Langflow: https://github.com/logspace-ai/langflow
+    - Flowise: https://github.com/FlowiseAI/Flowise
+    - Prompt flow: https://github.com/microsoft/promptflow
+  - 配置文件
+    - Guardrails: https://github.com/guardrails-ai/guardrails
+    - NeMo Guardrails: https://github.com/NVIDIA/NeMo-Guardrails
+- 在程序中嵌入prompt型
+  - guidance: https://github.com/guidance-ai/guidance
+  - LMQL: https://github.com/eth-sri/lmql
+  - LCEL (LangChain): https://python.langchain.com/docs/expression_language/
+  - Marvin: https://github.com/PrefectHQ/marvin
+  - TypeChat: https://github.com/microsoft/TypeChat
+- 在prompt中嵌入程序型
+  - PromptLanguage (plang) [ours]: https://github.com/HJZ-XDU/plang
 
-## 鸣谢项目：
-本项目使用了以下开源项目，在此对相关项目和研究开发人员表示感谢。
-
-- llama-cpp-python：https://github.com/abetlen/llama-cpp-python.git
+## 鸣谢项目
+- llama-cpp-python：https://github.com/abetlen/llama-cpp-python
