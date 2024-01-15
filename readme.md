@@ -76,11 +76,11 @@ $ python plang.py \
 
 整体规则如下：
 ```
-some prompt string
+[some prompt string]
 
-`funciton/variableName [parameterName parameterValue] [...] [as variableName] [;]`
+[`funciton/variableName [parameterName parameterValue] [...] [as variableName] [;]`]
 
-some prompt string
+[some prompt string]
 ```
 其中，`[]`表示可选，`...`表示0个或多个。
 
@@ -872,6 +872,7 @@ ls
   - 代码编程
     - LangChain: https://github.com/langchain-ai/langchain
     - Semantic Kernel: https://github.com/microsoft/semantic-kernel
+    - MiniChain: https://github.com/srush/MiniChain
     - AutoGen: https://github.com/microsoft/autogen
     - CrewAI: https://github.com/joaomdmoura/crewAI
   - 图形编程
