@@ -885,6 +885,7 @@ ls
 - 在程序中嵌入prompt型
   - guidance: https://github.com/guidance-ai/guidance
   - LMQL: https://github.com/eth-sri/lmql
+  - SGLang: https://github.com/sgl-project/sglang
   - LCEL (LangChain): https://python.langchain.com/docs/expression_language/
   - Marvin: https://github.com/PrefectHQ/marvin
   - TypeChat: https://github.com/microsoft/TypeChat
