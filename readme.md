@@ -43,7 +43,7 @@ GGML以及GGUF格式模型可在[huggingface.co/TheBloke](https://huggingface.co
 ```
 Example
 ```
-$ python plang.py \
+$ python -u plang.py \
   --model Llama_GGML \
   --path /path/to/model.gguf \
   --lib ./examples/sampleTest/lib.py \
@@ -855,7 +855,7 @@ ls
 ## TODOs
 * [ ] 完善已有函数功能 (./libLang/)
 * [ ] 添加更多函数 (./libLang/)
-    * [ ] 按照正则表达式生成文本 (./libLang/fill.py 注册参数为："fill", ["regex", ])
+    * [x] 按照正则表达式生成文本 (./libLang/fill.py 注册参数为："fill", ["regex", ]) // 注："fill" -> "match"
 * [ ] 添加更多示例 (./examples/)
 * [ ] 支持更多模型格式 (./libLLM/)
 * [ ] 建立贡献目录 (./contribution/)

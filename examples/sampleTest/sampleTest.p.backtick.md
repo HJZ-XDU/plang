@@ -32,7 +32,7 @@ INFO是由系统自动获取的内部和外部环境实时信息，供ASSISTANT�
 你的名字是`complete temperature is` 0.75`;`
 
 ## USER:
-请帮我打开电视
+请帮我打开`match regex` 冰箱|电视|空调 `with max token` 3 `;`
 
 [ INFO ]:
 用户希望操作的电器是：`select from` 冰箱 `or` 电视 `or` 空调 `as apploance`
