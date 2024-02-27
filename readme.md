@@ -167,6 +167,46 @@ A
 </details>
 
 <details>
+<summary>match</summary>
+
+#### 函数签名：
+```
+`match regex` parameterValue [`with max token` parameterValue]
+```
+
+#### 函数介绍：
+
+该函数用于规定大语言模型的输出，根据正则表达式生成文本。
+
+#### 参数介绍：
+
+`regex`：该参数接受一个正则表达式。
+
+`with max token`：该参数接受一个整数，表示正则表达式的最大匹配长度。
+
+#### 返回值说明：
+
+prompt：大语言模型根据正则表达式生成的文本。
+
+as：大语言模型根据正则表达式生成的文本。
+
+#### 用例说明：
+```
+`match regex` \(\d{3}\) 555-\d{4,} `with max token` 14 `;`
+```
+#### 样式化代码：
+
+![./examples/functionTest/matchReadme.p.png](examples/functionReadme/matchReadme.p.png)
+
+#### 执行结果：
+```
+(189) 555-5555
+```
+
+***
+</details>
+
+<details>
 <summary>read</summary>
 
 #### 函数签名：
