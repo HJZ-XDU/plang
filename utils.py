@@ -101,4 +101,4 @@ def readFunctionListParameter(name: str, kwargFunctionDict: dict, parameterType:
         return parameterType(defaultValue)
 
 # xxx False条件判定待检验
-falseList = [None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]
+falseList = [None, 0, False, 'None', 'none', '0', 'False', 'false', '', list(), tuple(), dict(), set()]
