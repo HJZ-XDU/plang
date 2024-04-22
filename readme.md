@@ -17,15 +17,21 @@
 [//]: # (new type of general-purpose natural language computer.)
 
 ## 安装和测试
-### 克隆库
+### 自动安装
+```bash
+pip install git+https://github.com/HJZ-XDU/plang.git
 ```
+
+### 手动安装
+#### 克隆库
+```bash
 git clone https://github.com/HJZ-XDU/plang.git
 ```
 
-### 安装环境
+#### 安装环境
 
-```
-pip install llama_cpp_python
+```bash
+pip install llama_cpp_python regex numpy
 ```
 注意：llama_cpp_python 0.1.79 版本以上支持 gguf 格式，0.1.78 版本以下支持 ggml 格式，请根据自己的模型格式选择版本。
 
@@ -38,11 +44,11 @@ pip install llama_cpp_python
 GGML以及GGUF格式模型可在[huggingface.co/TheBloke](https://huggingface.co/TheBloke)下载
 
 ### 运行示例代码 
-```
- $  plang.py [--help] [--model [MODEL]] --path PATH [--nContext [NCONTEXT]] [--lib [LIB ...]] [--verbose] FILE
+```bash
+ $ plang.py [--help] [--model [MODEL]] --path PATH [--nContext [NCONTEXT]] [--lib [LIB ...]] [--verbose] FILE
 ```
 Example
-```
+```bash
 $ python -u plang.py \
   --model Llama_GGML \
   --path /path/to/model.gguf \
