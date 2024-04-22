@@ -5,6 +5,6 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
+from .. import plang
 
 plang.registerVariable('author', 'Tony Hu')

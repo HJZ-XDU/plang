@@ -5,10 +5,10 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
-import executor
-import utils
-import program
+from .. import plang
+from .. import executor
+from .. import utils
+from .. import program
 
 @plang.registerFunctionDecorator('if', ['condition', 'then'])
 def if_do(**kwargs):

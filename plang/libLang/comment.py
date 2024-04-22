@@ -5,7 +5,7 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
+from .. import plang
 
 # todo 解析器存在问题，不能处理函数名与参数名相同的情况（好像是解析起总是有限判定一个字符串是否为函数名）
 @plang.registerFunctionDecorator('#', ['/', ])

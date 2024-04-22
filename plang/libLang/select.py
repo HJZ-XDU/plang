@@ -5,8 +5,8 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
-import utils
+from .. import plang
+from .. import utils
 
 
 @plang.registerFunctionDecorator('select', ['from', ])

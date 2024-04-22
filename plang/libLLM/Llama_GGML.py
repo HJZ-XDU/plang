@@ -5,7 +5,7 @@
 @email: mail@tonyhu.xyz
 """
 
-from LLM import LLMBase
+from ..LLM import LLMBase
 from llama_cpp import Llama
 import copy
 

@@ -5,10 +5,10 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
-import program
-import executor
-import utils
+from .. import plang
+from .. import program
+from .. import executor
+from .. import utils
 
 @plang.registerFunctionDecorator('while', ['condition', 'then'])
 def while_do(**kwargs):

@@ -5,8 +5,8 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
-import utils
+from .. import plang
+from .. import utils
 
 @plang.registerFunctionDecorator('set', ['value', 'not'])
 def setFunction(**kwargs): # 注意：按命名惯例，函数名应该叫set，但与python内部命名冲突

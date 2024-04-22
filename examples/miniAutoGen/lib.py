@@ -6,7 +6,7 @@
 """
 
 import plang
-import utils
+from plang import utils
 import subprocess
 
 @plang.registerFunctionDecorator('python', ['run code', ])

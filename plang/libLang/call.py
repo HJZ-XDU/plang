@@ -5,10 +5,10 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
-import executor
-import utils
-import program
+from .. import plang
+from .. import executor
+from .. import utils
+from .. import program
 
 """
 将A、B、C依次作为functionName函数的参数并调用该函数（意味着call元编程不能使用默认参数功能，必须按顺序提供所有参数）

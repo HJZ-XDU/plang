@@ -5,10 +5,10 @@
 @email: mail@tonyhu.xyz
 """
 
-import program
-import utils
+from . import program
+from . import utils
 import typing
-import LLM
+from . import LLM
 import copy
 from collections import OrderedDict
 

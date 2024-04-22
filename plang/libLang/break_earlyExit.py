@@ -5,8 +5,8 @@
 @email: mail@tonyhu.xyz
 """
 
-import plang
-import executor
+from .. import plang
+from .. import executor
 
 @plang.registerFunctionDecorator('break', [])
 def break_earlyExit(**kwargs):

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["plang"]
+
+[tool.setuptools.package-data]
+plang = ["libLang/*", "libLLM/*"]
+
+[project]
+name = "promptLanguage"
+version = "0.0.0"
+description = "PromptLanguage(plang): a string first-class citizen programming language for Large Language Models (LLMs) prompting"
+authors = [
+    {name = "Tony Hu", email = "mail@tonyhu.xyz"},
+]
+readme = "readme.md"
+classifiers = [
+    "Intended Audience :: Developers",
+]
+keywords = [
+    "PromptLanguage",
+    "Prompt Language",
+    "plang"
+]
+dependencies = [
+    "llama_cpp_python",
+    "regex",
+    "numpy"
+]
+
+[project.urls]
+Homepage = "https://github.com/HJZ-XDU/plang"
+Repository = "https://github.com/HJZ-XDU/plang.git"
+
+[project.scripts]
+plang = "plang.plang:main"

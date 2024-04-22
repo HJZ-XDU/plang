@@ -5,10 +5,10 @@
 @email: mail@tonyhu.xyz
 """
 
-import program
+from . import program
 import copy
 import importlib.util
-import executor
+from . import executor
 import typing
 
 """

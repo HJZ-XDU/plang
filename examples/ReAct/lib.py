@@ -6,7 +6,7 @@
 """
 
 import plang
-import utils
+from plang import utils
 
 @plang.registerFunctionDecorator('plangSearchTool', ['keyword', ])
 def plangSearchTool(**kwargs):
