@@ -1,5 +1,5 @@
-# PromptLanguage (plang): 一种面向大语言模型(LLM)提示(prompt)的字符串优先编程语言
-# PromptLanguage (plang): a string first-class citizen programming language for Large Language Models (LLMs) prompting
+# <img src="plang.png" width="30" height="30"> PromptLanguage (plang): 一种面向大语言模型(LLM)提示(prompt)的字符串优先编程语言
+# <img src="plang.png" width="30" height="30"> PromptLanguage (plang): a string first-class citizen programming language for Large Language Models (LLMs) prompting
 
 将大语言模型(LLMs)看作一种处理知识（文字）的新型计算机范式，那么它需要一门编程语言。为此，我们设计了PromptLanguage (plang)语言，它是一种字符串为一等公民的面向大语言模型提示工程的编程语言。其核心语法规则遵循：默认解析为字符串、通过字体样式区分字符串与代码（例如：字体颜色），进而实现字符串优先且对任何字符都透明。
 该语言具有以下特性：
