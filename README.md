@@ -1,2 +1,1 @@
-# plang
-PromptLanguage (plang): a string first-class citizen programming language for Large Language Models (LLMs) prompting.
+The code associated with this paper will be made publicly available upon publication, as the manuscript is currently under review.
