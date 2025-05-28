@@ -1,49 +1,49 @@
-# <img src="plang.png" width="30" height="30"> PromptLanguage (plang): 一种面向大语言模型(LLM)提示(prompt)的字符串优先编程语言
 # <img src="plang.png" width="30" height="30"> PromptLanguage (plang): a string first-class citizen programming language for Large Language Models (LLMs) prompting
+(Auto-translated by Google Gemini. Chinese version [here](readme_zh.md).)
 
-将大语言模型(LLMs)看作一种处理知识（文字）的新型计算机范式，那么它需要一门编程语言。为此，我们设计了PromptLanguage (plang)语言，它是一种字符串为一等公民的面向大语言模型提示工程的编程语言。其核心语法规则遵循：默认解析为字符串、通过字体样式区分字符串与代码（例如：字体颜色），进而实现字符串优先且对任何字符都透明。
-该语言具有以下特性：
+Considering Large Language Models (LLMs) as a new computing paradigm for processing knowledge (text), they require a programming language. To this end, we designed PromptLanguage (plang), a programming language where strings are first-class citizens, oriented towards prompt engineering for Large Language Models. Its core syntax rules follow: default parsing to strings, distinguishing strings from code through font styles (e.g., font color), thereby achieving string priority and transparency for any character.
+The language has the following features:
 
-1. 符合直觉的交互式prompt开发；
-2. 运行在LLMs上，自动管理context，与外部API便捷交互；
-3. 引导LLMs按照预期行为和格式输出；
-4. 面向prompt编程，所想既所得；
-5. 面向直观、大型、复杂交互（人、物、环境等）的提示工程；
-6. 兼容python生态；
+1. Intuitive and interactive prompt development;
+2. Runs on LLMs, automatically manages context, and interacts conveniently with external APIs;
+3. Guides LLMs to output according to expected behavior and format;
+4. Prompt-oriented programming, what you think is what you get;
+5. Prompt engineering for intuitive, large-scale, complex interactions (human, object, environment, etc.);
+6. Compatible with the Python ecosystem;
 
-**plang尚不完善，欢迎测试、讨论、提交代码（例如：函数库、模型库、示例库等）。**
+**plang is still under development. We welcome testing, discussions, and code contributions (e.g., function libraries, model libraries, example libraries, etc.).**
 
 
 [//]: # (new type of general-purpose natural language computer.)
 
-## 安装和测试
-### 自动安装
+## Installation and Testing
+### Automatic Installation
 ```bash
 pip install git+https://github.com/HJZ-XDU/plang.git
 ```
 
-### 手动安装
-#### 克隆库
+### Manual Installation
+#### Clone Repository
 ```bash
 git clone https://github.com/HJZ-XDU/plang.git
 ```
 
-#### 安装环境
+#### Install Environment
 
 ```bash
 pip install llama_cpp_python regex numpy
 ```
-注意：llama_cpp_python 0.1.79 版本以上支持 gguf 格式，0.1.78 版本以下支持 ggml 格式，请根据自己的模型格式选择版本。
+Note: `llama_cpp_python` version 0.1.79 and above supports GGUF format, versions below 0.1.78 support GGML format. Please choose the version according to your model format.
 
-或跳转到 [llama_cpp_python](https://github.com/abetlen/llama-cpp-python) 查看更多信息
+Or go to [llama_cpp_python](https://github.com/abetlen/llama-cpp-python) for more information.
 
-### 下载模型
+### Download Models
 
-当前支持GGML以及GGUF格式模型，更多模型扩展中
+Currently supports GGML and GGUF format models, more model extensions are in progress.
 
-GGML以及GGUF格式模型可在[huggingface.co/TheBloke](https://huggingface.co/TheBloke)下载
+GGML and GGUF format models can be downloaded from [huggingface.co/TheBloke](https://huggingface.co/TheBloke).
 
-### 运行示例代码 
+### Run Example Code
 ```bash
  $ plang.py [--help] [--model [MODEL]] --path PATH [--nContext [NCONTEXT]] [--lib [LIB ...]] [--verbose] FILE
 ```
@@ -55,79 +55,79 @@ $ python -u plang.py \
   --lib ./examples/sampleTest/lib.py \
   ./examples/chatbotWithHistoryContext/chatbot.p.backtick.md
 ```
-参数说明：
-- `FILE`: plang程序路径。
-- `--path, -p`: llm模型文件路径。
--  `--help, -h`(可选): 显示帮助消息并退出。
-- `--model, -m`(可选): llm模型名，默认为`Llama_GGML`。
-- `--nContext, -n`(可选): llm上下文长度，默认为`2048`。
-- `--lib, -l`(可选): 程序中可能用到的库文件，可以指定多个。
-- `--verbose, -v`(可选): 启用verbose模式，输出调试信息，默认不启用。
+Parameter Description:
+- `FILE`: plang program path.
+- `--path, -p`: LLM model file path.
+-  `--help, -h` (optional): Show help message and exit.
+- `--model, -m` (optional): LLM model name, defaults to `Llama_GGML`.
+- `--nContext, -n` (optional): LLM context length, defaults to `2048`.
+- `--lib, -l` (optional): Library files that may be used in the program, multiple can be specified.
+- `--verbose, -v` (optional): Enable verbose mode, output debug information, disabled by default.
 
-## 快速开始
-### 关键字
-| 关键字     | 含义     | 备注     |
+## Quick Start
+### Keywords
+| Keyword     | Meaning     | Notes     |
 |---------|--------|--------|
-| _样式_    | 标记代码区域 | 暂不支持   |
-| as      | 赋值     |        |
-| or/and  | 列表     |        |
-| ;       | 句尾(可选) | 断句歧义使用 |
-| do/done | 代码块    | 元编程    |
-| `       | 标记代码区域 | 当前版本   |
+| _Style_    | Mark code area | Not yet supported   |
+| as      | Assignment     |        |
+| or/and  | List     |        |
+| ;       | End of sentence (optional) | Used for sentence disambiguation |
+| do/done | Code block    | Metaprogramming    |
+| `       | Mark code area | Current version   |
 
-### 语法
+### Syntax
 
-1. 使用字体样式区分字符串和代码（例如：颜色），当前版本使用一对``` ` ```区分代码，暂对``` ` ```符号不透明；
-2. 函数和变量调用为：`函数/变量名 参数键值对`
+1. Use font styles to distinguish strings and code (e.g., color). The current version uses a pair of ``` ` ``` to distinguish code, and is temporarily not transparent to the ``` ` ``` symbol;
+2. Function and variable calls are: `function/variableName parameterKeyValuePair`
 
-整体规则如下：
+The overall rules are as follows:
 ```
 [some prompt string]
 
-[`funciton/variableName [parameterName parameterValue] [...] [as variableName] [;]`]
+[`function/variableName [parameterName parameterValue] [...] [as variableName] [;]`]
 
 [some prompt string]
 ```
-其中，`[]`表示可选，`...`表示0个或多个。
+Where `[]` indicates optional, and `...` indicates 0 or more.
 
-### 内建函数
+### Built-in Functions
 
 <details>
 
 <summary>complete</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `complete [prompt is` parameterValue] [`stop at` parameterValue] [`temperature is` parameterValue] 
 ```
 
-#### 函数说明：
+#### Function Description:
 
-该函数用于使用大语言模型对给定的prompt进行推理，可以自定义推理停止符，以及推理时的temperature参数。
+This function is used to perform inference on a given prompt using a large language model. Custom stop tokens and the temperature parameter for inference can be defined.
 
-#### 参数说明：
+#### Parameter Description:
 
-`prompt is`（可选）：用于指定大语言模型的prompt。如果没有该项，大语言模型的prompt将被设置为之前程序中解析出的所有文本。
+`prompt is` (optional): Specifies the prompt for the large language model. If this item is not present, the large language model's prompt will be set to all text parsed in the program previously.
 
-`stop at`（可选）：设置推理停止符集合。
+`stop at` (optional): Sets the collection of inference stop tokens.
 
-`temperature is`（可选）：设置大语言模型推理时的temperature参数。
+`temperature is` (optional): Sets the temperature parameter for large language model inference.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：模型推理推理结果字符串（prompt返回值会加入程序上下文）
+prompt: The resulting string from model inference (the prompt return value will be added to the program context).
 
-as：模型推理推理结果字符串（as返回值会赋值给as后的变量）
+as: The resulting string from model inference (the as return value will be assigned to the variable after as).
 
-#### 用例说明：
+#### Usage Example:
 ```
 `complete prompt is` How many days in a common year? `stop at` # `or` : `temperature is` 0.9 `;`
 ```
-#### 样式化代码：
+#### Styled Code:
 ![./examples/functionTest/completeReadme.p.png](examples/functionReadme/completeReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 A common year has 365 days.
 ```
@@ -137,34 +137,34 @@ A common year has 365 days.
 <details>
 <summary>select</summary>
 
-#### 函数签名：
+#### Function Signature:
 ```
 `select from` parameterValue [`or` parameterValue] […] 
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-该函数用于规定大语言模型的输出，使大语言模型输出为from后的元素集合中的一个，选择的依据是根据大语言模型推理结果的概率。
+This function is used to constrain the output of the large language model, making it output one of the elements from the set after `from`. The selection is based on the probability of the large language model's inference results.
 
-#### 参数介绍：
+#### Parameter Description:
 
-`from`：该参数接受元素的集合。
+`from`: This parameter accepts a collection of elements.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：from后的元素集合中概率最大的元素。
+prompt: The element with the highest probability from the collection after `from`.
 
-as：from后的元素集合中概率最大的元素。
+as: The element with the highest probability from the collection after `from`.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `select from` A `or` B `or` C 
 ```
-样式化代码：
+Styled Code:
 
 ![./examples/functionTest/selectReadme.p.png](examples/functionReadme/selectReadme.p.png)
 
-执行结果：
+Execution Result:
 ```
 A
 ```
@@ -175,36 +175,36 @@ A
 <details>
 <summary>match</summary>
 
-#### 函数签名：
+#### Function Signature:
 ```
 `match regex` parameterValue [`with max token` parameterValue]
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-该函数用于规定大语言模型的输出，根据正则表达式生成文本。
+This function is used to constrain the output of the large language model, generating text based on a regular expression.
 
-#### 参数介绍：
+#### Parameter Description:
 
-`regex`：该参数接受一个正则表达式。
+`regex`: This parameter accepts a regular expression.
 
-`with max token`：该参数接受一个整数，表示正则表达式的最大匹配长度。
+`with max token`: This parameter accepts an integer, representing the maximum matching length of the regular expression.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：大语言模型根据正则表达式生成的文本。
+prompt: Text generated by the large language model based on the regular expression.
 
-as：大语言模型根据正则表达式生成的文本。
+as: Text generated by the large language model based on the regular expression.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `match regex` \(\d{3}\) 555-\d{4,} `with max token` 14 `;`
 ```
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/matchReadme.p.png](examples/functionReadme/matchReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 (189) 555-5555
 ```
@@ -215,36 +215,36 @@ as：大语言模型根据正则表达式生成的文本。
 <details>
 <summary>read</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `read from` parameterValue
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-该函数接受外部输入，目前仅支持来自命令行的输入。
+This function accepts external input, currently only supporting input from the command line.
 
-#### 参数介绍：
+#### Parameter Description:
 
-`from`：该参数接受外部输入的来源，目前仅支持接受console。
+`from`: This parameter accepts the source of external input, currently only supporting `console`.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：外部输入的内容。
+prompt: The content of the external input.
 
-as：外部输入的内容。
+as: The content of the external input.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `read from` console
 ```
 
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/readReadme.p.png](examples/functionReadme/readReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 > hi
 hi
@@ -254,43 +254,43 @@ hi
 <details>
 <summary>set</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `set value/not` parameterValue
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-使用value时，该函数用于赋值操作，需要与as搭配使用。
+When using `value`, this function is used for assignment operations and needs to be used with `as`.
 
-使用not时，该函数用于判断parameterValue是否在false列表中。
+When using `not`, this function is used to determine if `parameterValue` is in the false list.
 
-false列表：`[None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]`
+False list: `[None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]`
 
-#### 参数介绍：
+#### Parameter Description:
 
-`value`：该参数接受要赋值的值。
+`value`: This parameter accepts the value to be assigned.
 
-`not`：该参数接受一个表达式或变量名，表示要赋值的是否在false列表中。
+`not`: This parameter accepts an expression or variable name, indicating whether the value to be assigned is in the false list.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：使用value时，返回value的值；使用not时，返回true或false。判断的依据是value的值是否在规定的false列表中。
+as: When using `value`, returns the value of `value`; when using `not`, returns `true` or `false`. The determination is based on whether the value of `value` is in the specified false list.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `set value` true `as variable`
 `set not variable as variable`
 variable：`variable`
 ```
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/setReadme.p.png](examples/functionReadme/setReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 variable：False
 ```
@@ -300,39 +300,39 @@ variable：False
 <details>
 <summary>call</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `call function` parameterValue [`with parameter` parameterValue [`and` parameterValue] […] ]
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-通过函数名调用某个函数，必须按照函数的参数顺序传入参数。
+Calls a function by its name. Parameters must be passed in the order defined by the function.
 
-#### 参数介绍：
+#### Parameter Description:
 
-`function`：该参数接受函数名。
+`function`: This parameter accepts the function name.
 
-`with parameter`：该参数接受函数的参数，可以指定多个，但必须按照函数的参数顺序传入参数。
+`with parameter`: This parameter accepts the function's parameters. Multiple parameters can be specified, but they must be passed in the order defined by the function.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：被调用函数的返回值。
+as: The return value of the called function.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `call function` complete `with parameter` How many days in a common year? `and` # `and` 0.9 `as result`
 result：`result`
 ```
 
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/callReadme.p.png](examples/functionReadme/callReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 A common year, also known as a non-leap year, has 365 days.
 result：
@@ -344,7 +344,7 @@ A common year, also known as a non-leap year, has 365 days.
 <details>
 <summary>if</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `if condition` parameterValue `then do`
@@ -352,35 +352,35 @@ parameterValue(program)
 `done`
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-该函数用于实现if判断语句。是否执行if的依据是condition的值，如果condition的值在false列表中，则不执行if，否则执行if。
+This function implements an if conditional statement. Whether the if block is executed depends on the value of `condition`. If the value of `condition` is in the false list, the if block is not executed; otherwise, it is executed.
 
-false列表：`[None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]`
+False list: `[None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]`
 
-#### 参数介绍：
+#### Parameter Description:
 
-`condition`：该参数接受一个表达式或变量名，表示循环的条件。
+`condition`: This parameter accepts an expression or variable name, representing the condition for the loop.
 
-`then`：该参数接受 循环体的代码块，包含了循环执行的操作。
+`then`: This parameter accepts the code block of the loop body, containing the operations to be executed in the loop.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：condition的值。
+as: The value of `condition`.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `if condition` true `then do`
 This statement will be executed.
 `done`
 ```
-样式化代码：
+Styled Code:
 
 ![./examples/functionTest/ifReadme.p.png](examples/functionReadme/ifReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 This statement will be executed.
 ```
@@ -389,7 +389,7 @@ This statement will be executed.
 <details>
 <summary>while</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `while condition` parameterValue `then do`
@@ -397,35 +397,35 @@ parameterValue(program)
 `done`
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-该函数实现了while循环语句的功能。是否执行while的依据是condition的值，如果condition的值在false列表中，则不执行while，否则执行while。
+This function implements the functionality of a while loop statement. Whether the while loop is executed depends on the value of `condition`. If the value of `condition` is in the false list, the while loop is not executed; otherwise, it is executed.
 
-false列表：`[None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]`
+False list: `[None, 0, False, 'None', '0', 'False', '', list(), tuple(), dict(), set()]`
 
-#### 参数介绍：
+#### Parameter Description:
 
-`condition`：该参数接受一个表达式或变量名，表示循环的条件。
+`condition`: This parameter accepts an expression or variable name, representing the condition for the loop.
 
-`then`：该参数接受循环体的代码块，包含了循环执行的操作。
+`then`: This parameter accepts the code block of the loop body, containing the operations to be executed in the loop.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：condition的值。
+as: The value of `condition`.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `while condition` true `then do`
 executing loop body
 `done`
 ```
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/whileReadme.p.png](examples/functionReadme/whileReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 executing loop body
 executing loop body
@@ -438,41 +438,41 @@ executing loop body
 <details>
 <summary>for</summary>
 
-#### 函数签名：
+#### Function Signature:
 ```
 `for each` parameterValue [`or` parameterValue] […] `then`
 parameterValue(program)
 `done`
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-该函数遍历each中的每一个元素，对于每一个元素执行then中循环体的操作。
+This function iterates through each element in `each`, and for each element, executes the operations in the loop body within `then`.
 
-#### 参数介绍：
+#### Parameter Description:
 
-`each`：该参数接受要遍历的元素集合
+`each`: This parameter accepts the collection of elements to be iterated over.
 
-`then`：该参数接受 循环体的代码块，包含了循环执行的操作。
+`then`: This parameter accepts the code block of the loop body, containing the operations to be executed in the loop.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：for中当前遍历的元素。
+as: The current element being iterated over in the `for` loop.
 
-#### 用例说明：
+#### Usage Example:
 
 ```
 `for each` a `or` b `or` c `then do`
 item： `item`
 `done as item`
 ```
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/forReadme.p.png](examples/functionReadme/forReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 item： a
 item： b
@@ -484,37 +484,37 @@ item： c
 <details>
 
 <summary>compare</summary>
-函数签名:
+Function Signature:
 
 ```
 `compare value` parameterValue [`and` parameterValue] […]
 ```
 
-#### 函数说明：
+#### Function Description:
 
-该函数用于比较value中的元素集合是否全部相同。 
+This function is used to compare whether all elements in the `value` collection are identical.
 
-#### 参数说明
+#### Parameter Description
 
-`value`：接受用于比较的元素集合。
+`value`: Accepts the collection of elements for comparison.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：若value中的元素集合全部相同，返回true，否则为false。
+as: Returns `true` if all elements in the `value` collection are identical, otherwise `false`.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `compare value` true `and` false `as isEqual`
 isEqual：`isEqual`
 ```
 
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/compareReadme.p.png](examples/functionReadme/compareReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 isEqual：False
 ```
@@ -526,26 +526,26 @@ isEqual：False
 
 <summary>break</summary>
 
-#### 函数签名：
+#### Function Signature:
 ```
 `break`
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-在循环中使用时，用于跳出循环，无论循环的条件是否满足。
+When used within a loop, it is used to exit the loop, regardless of whether the loop's condition is met.
 
-#### 参数介绍：
+#### Parameter Description:
 
-无
+None
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：`'break'`。
+as: `'break'`.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `while condition` true `then do
 break`
@@ -553,11 +553,11 @@ This statement will not be executed.
 `done`
 This statement will be executed.
 ```
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/breakReadme.p.png](examples/functionReadme/breakReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 This statement will be executed.
 ```
@@ -567,27 +567,27 @@ This statement will be executed.
 <details>
 <summary>continue</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `continue` 
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-实现continue语句，主要用于循环结构，通常在满足某些条件时，希望跳过当前迭代，直接执行下一次迭代。
+Implements the continue statement, mainly used in loop structures. It is typically used when, under certain conditions, one wishes to skip the current iteration and proceed directly to the next.
 
-#### 参数介绍：
+#### Parameter Description:
 
-无
+None
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as：`'continue'`。
+as: `'continue'`.
 
-#### 用例说明：
+#### Usage Example:
 ```
 `for each` a `or` b `then do`
 This statement will be executed: `item`
@@ -596,11 +596,11 @@ This statement will not be executed: `item`
 `done as item`
 ```
 
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/continueReadme.p.png](examples/functionReadme/continueReadme.p.png)
 
-执行结果：
+Execution Result:
 ```
 This statement will be executed: a
 This statement will be executed: b
@@ -612,47 +612,47 @@ This statement will be executed: b
 
 <summary>comment</summary>
 
-#### 函数签名：
+#### Function Signature:
 
 ```
 `# /` variableValue
 ```
 
-#### 函数介绍：
+#### Function Description:
 
-该函数用于注释，
+This function is used for commenting.
 
-#### 参数介绍：
+#### Parameter Description:
 
-`/` ：该参数接受的值将被注释。
+`/` : The value accepted by this parameter will be commented out.
 
-#### 返回值说明：
+#### Return Value Description:
 
-prompt：空字符串`''`。
+prompt: Empty string `''`.
 
-as: 无返回值，即`None`。
+as: No return value, i.e., `None`.
 
-#### 用例说明：
+#### Usage Example:
 ```
 This statement will not be commented out.
 `# /` This statement will be commented out.
 ```
-#### 样式化代码：
+#### Styled Code:
 
 ![./examples/functionTest/commentReadme.p.png](examples/functionReadme/commentReadme.p.png)
 
-#### 执行结果：
+#### Execution Result:
 ```
 This statement will not be commented out.
 ```
 ***
 </details>
 
-## 示例
-### 聊天机器人
-描述：8行代码实现支持历史记录上下文的聊天机器人。
+## Examples
+### Chatbot
+Description: 8 lines of code implement a chatbot that supports history context.
 
-代码：
+Code:
 ```
 `while condition` true `then do`
 ## USER:
@@ -663,11 +663,11 @@ This statement will not be commented out.
 
 `done`
 ```
-样式化代码：
+Styled Code:
 
 ![./examples/chatbotWithHistoryContext/chatbot.p.png](./examples/chatbotWithHistoryContext/chatbot.p.png)
 
-命令行启动语句：
+Command Line Startup Statement:
 ```
 $ python plang.py \
   --model Llama_GGML \
@@ -675,29 +675,29 @@ $ python plang.py \
   ./examples/chatbotWithHistoryContext/chatbot.p.backtick.md
 ```
 
-执行结果：
+Execution Result:
 ```
 ## USER:
-> 你好，我叫Tony
-你好，我叫Tony
+> Hello, my name is Tony
+Hello, my name is Tony
 
 ## ASSISTANT:
-您好，欢迎来到我的世界！有什么我可以帮助您的吗？
+Hello, welcome to my world! How can I help you?
 
 ## USER:
-> 请问你知道我的名字叫什么吗？
-请问你知道我的名字叫什么吗？
+> Do you know my name?
+Do you know my name?
 
 ## ASSISTANT:
-是的，我知道。你的名字叫做Tony。
+Yes, I do. Your name is Tony.
 
 ## USER:
 > 
 ```
-### ReAct工具调用
-描述：访问plangSearchTool工具，回答有关plang的问题
+### ReAct Tool Invocation
+Description: Access the plangSearchTool to answer questions about plang.
 
-代码：
+Code:
 ```
 Answer the following questions as best you can. You have access to the following tools:
 
@@ -734,11 +734,11 @@ Final Answer:`complete stop at` Question`;`
 
 `done`
 ```
-样式化代码：
+Styled Code:
 
 ![./examples/ReAct/react.p.png](./examples/ReAct/react.p.png)
 
-命令行启动语句：
+Command Line Startup Statement:
 ```
 $ python plang.py \
   --model Llama_GGML \
@@ -747,7 +747,7 @@ $ python plang.py \
   ./examples/ReAct/react.p.backtick.md
 ```
 
-执行结果
+Execution Result
 ```
 Answer the following questions as best you can. You have access to the following tools:
 
@@ -782,9 +782,9 @@ Question: >
 ```
 
 ### miniAutoGen
-描述：多Agent自组织发言、写代码、执行代码来完成用户指令
+Description: Multiple agents self-organize to speak, write code, and execute code to complete user instructions.
 
-代码：
+Code:
 ```
 Below is a conversation organized in Markdown format between a customer, project manager, programmer, and tester:
 
@@ -826,11 +826,11 @@ done`
 
 `done`
 ```
-样式化代码：
+Styled Code:
 
 ![./examples/miniAutoGen/miniAutoGen.p.png](./examples/miniAutoGen/miniAutoGen.p.png)
 
-命令行启动语句：
+Command Line Startup Statement:
 ```
 $ python plang.py \
   --model Llama_GGML \
@@ -838,7 +838,7 @@ $ python plang.py \
   --lib ./examples/miniAutoGen/lib.py \
   ./examples/miniAutoGen/miniAutoGen.p.backtick.md
 ```
-执行结果：
+Execution Result:
 ```
 Below is a conversation organized in Markdown format between a customer, project manager, programmer, and tester:
 
@@ -891,52 +891,52 @@ Great job! Customer, your requirement is fulfilled.
 TERMINATE
 ```
 
-### 更多
-见./examples目录：
+### More
+See the ./examples directory:
 ```
 cd ./examples
 ls
 ```
 
 ## TODOs
-* [ ] 完善已有函数功能 (./libLang/)
-* [ ] 添加更多函数 (./libLang/)
-    * [x] 按照正则表达式生成文本 (./libLang/fill.py 注册参数为："fill", ["regex", ]) // 注："fill" -> "match"
-* [ ] 添加更多示例 (./examples/)
-* [ ] 支持更多模型格式 (./libLLM/)
-* [ ] 建立贡献目录 (./contribution/)
-* [ ] 完善开发和贡献文档 (./readme.md、./contribution.md)
-* [ ] 已知Bug
-    * [ ] 参数名与函数名相同时，会将参数名解析为函数名
-    * [ ] 名字前缀相同时，会按照最短前缀名字解析
+* [ ] Improve existing function features (./libLang/)
+* [ ] Add more functions (./libLang/)
+    * [x] Generate text according to regular expressions (./libLang/fill.py register parameters as: "fill", ["regex", ]) // Note: "fill" -> "match"
+* [ ] Add more examples (./examples/)
+* [ ] Support more model formats (./libLLM/)
+* [ ] Establish contribution directory (./contribution/)
+* [ ] Improve development and contribution documentation (./readme.md, ./contribution.md)
+* [ ] Known Bugs
+    * [ ] When a parameter name is the same as a function name, the parameter name will be parsed as a function name
+    * [ ] When name prefixes are the same, it will be parsed according to the shortest prefix name
 
-## 相关工作 (prompting技术)
-- 字符串模板型
-  - 自然语言文本
-  - 穿插“占位符”的文本
-- API编程型
-  - 代码编程
+## Related Work (prompting technology)
+- String Template Type
+  - Natural language text
+  - Text interspersed with "placeholders"
+- API Programming Type
+  - Code Programming
     - LangChain: https://github.com/langchain-ai/langchain
     - Semantic Kernel: https://github.com/microsoft/semantic-kernel
     - MiniChain: https://github.com/srush/MiniChain
     - AutoGen: https://github.com/microsoft/autogen
     - CrewAI: https://github.com/joaomdmoura/crewAI
-  - 图形编程
+  - Graphical Programming
     - Langflow: https://github.com/logspace-ai/langflow
     - Flowise: https://github.com/FlowiseAI/Flowise
     - Prompt flow: https://github.com/microsoft/promptflow
-  - 配置文件
+  - Configuration Files
     - Guardrails: https://github.com/guardrails-ai/guardrails
     - NeMo Guardrails: https://github.com/NVIDIA/NeMo-Guardrails
-- 在程序中嵌入prompt型
+- Embedding Prompts in Programs Type
   - guidance: https://github.com/guidance-ai/guidance
   - LMQL: https://github.com/eth-sri/lmql
   - SGLang: https://github.com/sgl-project/sglang
   - LCEL (LangChain): https://python.langchain.com/docs/expression_language/
   - Marvin: https://github.com/PrefectHQ/marvin
   - TypeChat: https://github.com/microsoft/TypeChat
-- 在prompt中嵌入程序型
+- Embedding Programs in Prompts Type
   - PromptLanguage (plang) [ours]: https://github.com/HJZ-XDU/plang
 
-## 鸣谢项目
+## Acknowledged Projects
 - llama-cpp-python：https://github.com/abetlen/llama-cpp-python
