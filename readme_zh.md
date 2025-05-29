@@ -84,7 +84,7 @@ $ python -u plang.py \
 ```
 [some prompt string]
 
-[`funciton/variableName [parameterName parameterValue] [...] [as variableName] [;]`]
+[`function/variableName [parameterName parameterValue] [...] [as variableName] [;]`]
 
 [some prompt string]
 ```
