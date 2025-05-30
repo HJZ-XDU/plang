@@ -68,12 +68,12 @@ Parameter Description:
 ### Keywords
 | Keyword     | Meaning     | Notes     |
 |---------|--------|--------|
-| _Style_    | Mark code area | Not yet supported   |
+| _Style_    | Mark code area | Character terminal   |
 | as      | Assignment     |        |
 | or/and  | List     |        |
 | ;       | End of sentence (optional) | Used for sentence disambiguation |
 | do/done | Code block    | Metaprogramming    |
-| `       | Mark code area | Current version   |
+| `       | Mark code area | **Interim**   |
 
 ### Syntax
 
